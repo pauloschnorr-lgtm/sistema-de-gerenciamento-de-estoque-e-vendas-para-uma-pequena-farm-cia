@@ -1,0 +1,205 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+int main()
+{
+    string nomeMed[50];
+    int qtdMed[50];
+    float precoMed[50];
+    
+    int totalMed=0;
+    int opcao;
+    char resp;
+
+ do{
+      
+    cout << "*GERENCIAMENTO DE ESTOQUE*" << endl;
+    cout << "Escolha uma opção: " << endl;
+    cout << " 1 - Cadastrar medicamento" << endl;
+    cout << " 2 - Atualizar estoque" << endl;
+    cout << " 3 - Buscar medicamento" << endl;
+    cout << " 4 - Vender medicamentos" << endl;
+    cout << " 5 - Listar medicamentos cadastrados" << endl;
+    cout << " 6 - Sair" << endl;
+    cin >> opcao;
+    
+    if(opcao==1){
+        if(totalMed==50){
+            cout << "Limite de medicamentos atingido!" << endl;
+        }
+        else{
+                string nome;
+                int qtd;
+                float preco;
+                bool jaCadastrado = false;
+                
+                cout << "Qual o nome do medicamento? " << endl;
+                cin >> nome;
+                for (int i = 0; i < totalMed; i++) {
+                    if (nomeMed[i] == nome) {
+                        jaCadastrado = true;
+                        break;
+                    }    
+                }
+                
+                if(jaCadastrado == true){
+                    cout << "Medicamento ja cadastrado" << endl;
+                }else{
+                    do{
+                        cout << "Qual a quantidade de unidades? " << endl;
+                        cin >> qtd;
+                        if(qtd <= 0){
+                            cout << "Quantidade invalida, inserir um valor positivo!" << endl;
+                        }    
+                    }while(qtd <= 0);
+                    
+                    do{
+                        cout << "Qual o valor unitario?" << endl;
+                        cin >> preco;
+                        if(preco <= 0){
+                            cout << "deve ser um valor positivo!" << endl;
+                        }
+                    }while(preco <= 0);    
+                
+                nomeMed[totalMed] = nome;
+                qtdMed[totalMed] = qtd;
+                precoMed[totalMed] = preco;
+                totalMed++;
+                
+                cout << "cadastro concluido! :) " << endl;
+                }
+        
+        }
+    }
+    
+    if(opcao==2){
+        string nome;
+        cout << "Qual o nome do medicamento?" << endl;
+        cin >> nome;
+        
+        int busca = -1;
+        for(int i = 0;i < totalMed; i++){
+            if(nomeMed[i] == nome){
+                busca = i;
+                break;
+            }
+        }
+        
+        if(busca == -1){
+            cout << "Medicamento não cadastrado" << endl;
+        }else{
+            int addMed;
+            do{
+                cout << "Qual a quantidade a ser adicionada? " << endl;
+                cin >> addMed;
+            }while(addMed <= 0);
+            
+            qtdMed[busca] += addMed;
+            cout << "Estoque atualizado" << endl;
+        }
+    }
+    
+    if(opcao==3){
+        string nome;
+        cout << "Qual o nome do medicamento? " << endl;
+        cin >> nome;
+        
+        int busca = -1;
+        for (int i = 0; i < totalMed; i++){
+            if(nomeMed[i]==nome){
+                busca=i;
+                break;
+            }
+        }
+        
+        if(busca == -1){
+            cout << "Medicamento nao cadastrado" << endl;
+        }else{
+            cout << "nome:" << endl;
+            cout << nomeMed[busca] << endl;
+            cout << "Quantidade:" << endl;
+            cout << qtdMed[busca] << endl;
+            cout << "preço unitario:" << endl;
+            cout << fixed << setprecision(2);
+            cout << precoMed[busca] << endl;
+        }
+    }
+    
+    if(opcao==4){
+        char resp;
+        float totalVenda=0;
+        
+        do{
+            string nome;
+            cout << "nome do medicamento: " << endl;
+            cin >> nome;
+            
+            int busca = -1;
+            for (int i = 0; i < totalMed; i++){
+                if (nomeMed[i] == nome){
+                    busca=i;
+                    break;
+                }
+            }
+            if(busca==-1){
+                cout << "nome invalido!" << endl;
+            }else{
+                int qtdVenda;
+                while(true){
+                    cout << "qual a quantidade desejada?" << endl;
+                    cin >> qtdVenda;
+                    
+                    if(qtdVenda <= 0){
+                        cout << "Quantidade invalida!" << endl;
+                    }
+                    else if(qtdVenda>qtdMed[busca]){
+                        cout << "quantidade nao disponivel" << endl;
+                    }else{
+                        qtdMed[busca]-=qtdVenda;
+                        totalVenda+=(qtdVenda*precoMed[busca]);
+                        break;
+                    }
+                }
+            }
+            cout << "Outro medicamento? S/N: ";
+            cin >> resp;
+        }while (resp == 'S' || resp == 's');
+        
+        cout << "TOTAL: " << endl;
+        cout << fixed << setprecision(2);
+        cout << totalVenda << endl;
+        cout << "Venda finalizada!" << endl;
+    }
+    
+    if(opcao==5){
+        float totalEstoque=0;
+        
+        for (int i = 0; i < totalMed; i++){
+            cout << "nome:" << endl;
+            cout << nomeMed[i] << endl;
+            cout << "quantidade:" << endl;
+            cout << qtdMed[i] << endl;
+            cout << "preco unitario:" << endl;
+            cout << fixed << setprecision(2);
+            cout << precoMed[i] << endl;
+            
+            totalEstoque+=(qtdMed[i]*precoMed[i]);
+        }
+        cout << "Total do estoque:" << endl;
+        cout << fixed << setprecision(2);
+        cout << totalEstoque << endl;
+    }
+    
+    if(opcao < 1 || opcao > 6){
+        cout << "opcao invalida";
+    }
+    
+    
+    
+    
+ }while(opcao != 6); 
+ 
+ cout << "Programa encerrado! :)";
+
+    return 0;
+}
