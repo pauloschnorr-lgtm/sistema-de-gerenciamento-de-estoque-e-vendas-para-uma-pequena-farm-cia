@@ -1,0 +1,1 @@
+# sistema-de-gerenciamento-de-estoque-e-vendas-para-uma-pequena-farm-cia
